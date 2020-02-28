@@ -1,7 +1,5 @@
 from PIL import Image
 
-
-
 #Creates image
 im = Image.new("RGB", (1024,1024))
 pixelsNew = im.load()
@@ -25,6 +23,16 @@ def convertToInt(binaryVal):
         return 2
     elif binaryVal == "11":
         return 3
+
+def convertIntToBinary(intVal):
+    if intVal == 0:
+        return "00"
+    elif intVal == 1:
+        return "01"
+    elif intVal == 2:
+        return "10"
+    elif intVal == 3:
+        return "11"
 
 def getNewRGBValue(initialVal, res, i):
     # print(i, "i value")
@@ -58,10 +66,21 @@ def insertMessage(binaryMessage):
         print('')
 
 def decryptMessage(pixelArray):
-    pass
+    binaryString = ""
+    #Might be 1 instead of 0 for size index
+    for i in range(1024):
+        rVal = pixelArray[i, 0][0] % 4 
+        gVal = pixelArray[i, 0][1] % 4
+        bVal = pixelArray[i, 0][2] % 4
+        binaryString += str(convertIntToBinary(rVal))
+        binaryString += str(convertIntToBinary(gVal))
+        binaryString += str(convertIntToBinary(bVal))
+    print(binaryString)
+
+
 
 insertMessage(convertMessageToBinary(messageToInsert))
-
+decryptMessage(im.load())
 im.show()
 
 

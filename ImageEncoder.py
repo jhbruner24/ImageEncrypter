@@ -2,17 +2,18 @@ from PIL import Image
 
 
 
+#Creates image
 im = Image.new("RGB", (1024,1024))
 pixelsNew = im.load()
 for i in range(im.size[0]):
     for j in range(im.size[1]):
         pixelsNew[i, j] = (0, 255, 0, 255)
 
-stringToInsert = "TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!"
+messageToInsert = "TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!"
 
-def convertStringToBinary(stringToConvert):
+def convertMessageToBinary(stringToConvert):
     res = ''.join(format(ord(i), 'b') for i in stringToConvert) 
-    print("The string after binary conversion : " + str(res))
+    print("The message after binary conversion : " + str(res))
     return res
 
 def convertToInt(binaryVal):
@@ -25,7 +26,7 @@ def convertToInt(binaryVal):
     elif binaryVal == "11":
         return 3
 
-def getNewValue(initialVal, res, i):
+def getNewRGBValue(initialVal, res, i):
     # print(i, "i value")
     #print(initialVal, " before shift")
     initialVal >>=  2  
@@ -37,6 +38,7 @@ def getNewValue(initialVal, res, i):
     return initialVal
 
 def insertMessage(binaryMessage):
+    #Iterate through each bit in Message
     for i in range(len(binaryMessage)//6):
         colorR = pixelsNew[0, i][0]
         print(colorR, "colorR")
@@ -45,11 +47,12 @@ def insertMessage(binaryMessage):
         colorB = pixelsNew[0, i][2]
         print(colorB, "colorB")
 
-        newR = getNewValue(colorR, binaryMessage, (i * 6))
+        #Assign RGB values
+        newR = getNewRGBValue(colorR, binaryMessage, (i * 6))
         print(newR, "newR")
-        newG = getNewValue(colorG, binaryMessage, (i * 6) + 2)
+        newG = getNewRGBValue(colorG, binaryMessage, (i * 6) + 2)
         print(newG, "newG")
-        newB = getNewValue(colorB, binaryMessage, (i * 6) + 4)
+        newB = getNewRGBValue(colorB, binaryMessage, (i * 6) + 4)
         print(newB, "newB")
         print(binaryMessage[i*6:(i+1)*6])
         print('')
@@ -57,7 +60,7 @@ def insertMessage(binaryMessage):
 def decryptMessage(pixelArray):
     pass
 
-insertMessage(convertStringToBinary(stringToInsert))
+insertMessage(convertMessageToBinary(messageToInsert))
 
 im.show()
 

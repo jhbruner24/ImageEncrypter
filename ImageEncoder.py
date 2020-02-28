@@ -10,9 +10,14 @@ for i in range(im.size[0]):
     for j in range(im.size[1]):
         pixelsNew[i, j] = (0, 255, 0, 255)
 
-test_str = "TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!"
-res = ''.join(format(ord(i), 'b') for i in test_str) 
-print("The string after binary conversion : " + str(res)) 
+StringToInsert = "TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!"
+
+insertMessage(StringToInsert)
+
+def convertStringToBinary(stringToConvert):
+    res = ''.join(format(ord(i), 'b') for i in stringToConvert) 
+    print("The string after binary conversion : " + str(res))
+    return res
 
 def convertToInt(binaryVal):
     if binaryVal == "00":
@@ -43,7 +48,7 @@ def insertMessage(binaryMessage):
         print(colorG, "colorG")
         colorB = pixelsNew[0, i][2]
         print(colorB, "colorB")
-        
+
         newR = getNewValue(colorR, binaryMessage, (i * 6))
         print(newR, "newR")
         newG = getNewValue(colorG, binaryMessage, (i * 6) + 2)

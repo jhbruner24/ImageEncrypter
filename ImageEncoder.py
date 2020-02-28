@@ -1,18 +1,14 @@
 from PIL import Image
 
 
-im = Image.open('AppIcon.JPG').convert("RGBA") # Can be many different formats.
-pix = im.load()
 
-im2 = Image.new("RGB", im.size)
-pixelsNew = im2.load()
+im = Image.new("RGB", (1024,1024))
+pixelsNew = im.load()
 for i in range(im.size[0]):
     for j in range(im.size[1]):
         pixelsNew[i, j] = (0, 255, 0, 255)
 
-StringToInsert = "TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!TUNA Needs to stop running around nowwwwww!!!!!!!!!!!!!!"
-
-insertMessage(StringToInsert)
+stringToInsert = "TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!"
 
 def convertStringToBinary(stringToConvert):
     res = ''.join(format(ord(i), 'b') for i in stringToConvert) 
@@ -55,16 +51,15 @@ def insertMessage(binaryMessage):
         print(newG, "newG")
         newB = getNewValue(colorB, binaryMessage, (i * 6) + 4)
         print(newB, "newB")
-        print(res[i*6:(i+1)*6])
+        print(binaryMessage[i*6:(i+1)*6])
         print('')
 
 def decryptMessage(pixelArray):
-    
+    pass
 
-print("The original string is : " + str(test_str)) 
+insertMessage(convertStringToBinary(stringToInsert))
 
-
-im2.show()
+im.show()
 
 
 

@@ -1,4 +1,8 @@
 from PIL import Image
+import math, binascii
+
+convertStringToInt = {"00": 0, "01": 1, "10": 2, "11": 3}
+convertIntToString = {0: "00", 1: '01', 2: '10', 3: '11'}
 
 #Creates image
 im = Image.new("RGB", (1024,1024))
@@ -8,46 +12,39 @@ for i in range(im.size[0]):
         pixelsNew[i, j] = (0, 255, 0, 255)
 
 messageToInsert = "TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!"
+ # Needs to stop running!!!!TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!"
+
+def string2bits(s):
+    return ''.join([bin(ord(x))[2:].zfill(8) for x in s])
+
+def bits2string(b):
+    all_bytes = []
+    for i in range(0, len(b), 8):
+        all_bytes += [b[i:i+8]]
+    return ''.join([chr(int(x, 2)) for x in all_bytes])
 
 def convertMessageToBinary(stringToConvert):
-    res = ''.join(format(ord(i), 'b') for i in stringToConvert) 
-    print("The message after binary conversion : " + str(res))
+    # res = ''.join(format(ord(i), 'b') for i in stringToConvert)
+    # res = bin(int.from_bytes(stringToConvert.encode(), 'big'))[2:] #cut off the 0b part
+    res = string2bits(stringToConvert)
+    print("message converted into binary:", res)
     return res
-
-def convertToInt(binaryVal):
-    if binaryVal == "00":
-        return 0
-    elif binaryVal == "01":
-        return 1
-    elif binaryVal == "10":
-        return 2
-    elif binaryVal == "11":
-        return 3
-
-def convertIntToBinary(intVal):
-    if intVal == 0:
-        return "00"
-    elif intVal == 1:
-        return "01"
-    elif intVal == 2:
-        return "10"
-    elif intVal == 3:
-        return "11"
 
 def getNewRGBValue(initialVal, res, i):
     # print(i, "i value")
     #print(initialVal, " before shift")
-    initialVal >>=  2  
-    #print(initialVal, " after shift right")
-    initialVal <<= 2
-    #print(initialVal, " after shift left")
-    initialVal += convertToInt(res[i: i+2])
-    #print(initialVal, " after insertion")
+    if (res[i: i+2] in convertStringToInt):
+        initialVal >>=  2
+        #print(initialVal, " after shift right")
+        initialVal <<= 2
+        #print(initialVal, " after shift left")
+        initialVal += convertStringToInt[res[i: i+2]]
+        #print(initialVal, " after insertion")
     return initialVal
 
 def insertMessage(binaryMessage):
     #Iterate through each bit in Message
-    for i in range(len(binaryMessage)//6):
+    for i in range(math.ceil(len(binaryMessage)/6)):
         colorR = pixelsNew[0, i][0]
         print(colorR, "colorR")
         colorG = pixelsNew[0, i][1]
@@ -61,27 +58,28 @@ def insertMessage(binaryMessage):
         newG = getNewRGBValue(colorG, binaryMessage, (i * 6) + 2)
         print(newG, "newG")
         newB = getNewRGBValue(colorB, binaryMessage, (i * 6) + 4)
+
+        pixelsNew[0, i] = (newR, newG, newB, 255)
+
         print(newB, "newB")
         print(binaryMessage[i*6:(i+1)*6])
         print('')
 
+
 def decryptMessage(pixelArray):
     binaryString = ""
     #Might be 1 instead of 0 for size index
-    for i in range(1024):
-        rVal = pixelArray[i, 0][0] % 4 
-        gVal = pixelArray[i, 0][1] % 4
-        bVal = pixelArray[i, 0][2] % 4
-        binaryString += str(convertIntToBinary(rVal))
-        binaryString += str(convertIntToBinary(gVal))
-        binaryString += str(convertIntToBinary(bVal))
+    for i in range(200): #should be 1024 for this file, but I truncated
+        for j in range(3):
+            binaryString += convertIntToString[pixelArray[0, i][j] % 4]
     print(binaryString)
+
+    # n = int('0b' + binaryString, 2)
+    # print("decryptMessage:", n.to_bytes((n.bit_length() + 7) // 8, 'big').decode())
+    print("decryptMessage:", bits2string(binaryString))
 
 
 
 insertMessage(convertMessageToBinary(messageToInsert))
 decryptMessage(im.load())
 im.show()
-
-
-

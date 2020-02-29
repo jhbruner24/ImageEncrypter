@@ -5,7 +5,7 @@ convertStringToInt = {"00": 0, "01": 1, "10": 2, "11": 3}
 convertIntToString = {0: "00", 1: '01', 2: '10', 3: '11'}
 
 #Creates image
-im = Image.open("IMG_4056-4.jpeg")
+im = Image.open("Mason.jpeg")
 pixelsNew = im.load()
 # for i in range(im.size[0]):
 #     for j in range(im.size[1]):
@@ -62,13 +62,12 @@ def insertMessage(binaryMessage):
         pixelsNew[0, i] = (newR, newG, newB, 255)
 
         # print(newB, "newB")
-        print(binaryMessage[i*6:(i+1)*6])
+        # print(binaryMessage[i*6:(i+1)*6])
         # print('')
 
 
 def decryptMessage(pixelArray):
     binaryString = ""
-    #Might be 1 instead of 0 for size index
     for i in range(200): #should be 1024 for this file, but I truncated
         for j in range(3):
             binaryString += convertIntToString[pixelArray[0, i][j] % 4]

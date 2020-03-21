@@ -7,11 +7,10 @@ class ImageProcessor:
     convertIntToString = {0: "00", 1: '01', 2: '10', 3: '11'}
 
     def __init__(self, file_name_in="Mason.jpeg"):
-        print(file_name_in)
+        # print(file_name_in)
         self.file_name = file_name_in
         #opens image
-        self.im = Image.open("Mason.jpeg")
-
+        self.im = Image.open(file_name_in)
         #stores pixel values
         self.pixelsNew = self.im.load()
         # for i in range(im.size[0]):
@@ -54,12 +53,17 @@ class ImageProcessor:
         binaryMessage = self.convertMessageToBinary(message)
 
         #Iterate through each bit in Message
+        picture_length, picture_width = self.im.size
         for i in range(math.ceil(len(binaryMessage)/6)):
-            colorR = self.pixelsNew[0, i][0]
+
+            row = i / picture_width
+            col = i % picture_width
+
+            colorR = self.pixelsNew[row, col][0]
             # print(colorR, "colorR")
-            colorG = self.pixelsNew[0, i][1]
+            colorG = self.pixelsNew[row, col][1]
             # print(colorG, "colorG")
-            colorB = self.pixelsNew[0, i][2]
+            colorB = self.pixelsNew[row, col][2]
             # print(colorB, "colorB")
 
             #Assign RGB values
@@ -69,35 +73,52 @@ class ImageProcessor:
             # print(newG, "newG")
             newB = self.getNewRGBValue(colorB, binaryMessage, (i * 6) + 4)
 
-            self.pixelsNew[0, i] = (newR, newG, newB, 255)
+            self.pixelsNew[row, col] = (newR, newG, newB, 255)
 
             # print(newB, "newB")
             # print(binaryMessage[i*6:(i+1)*6])
             # print('')
 
 
-    def decryptMessage(self, num_pix=200):
+    def decryptMessage(self, width=200, height=1):
+        if (height > self.get_size()[0]):
+            height = self.get_size()[0]
+        if (width > self.get_size()[1]):
+            width = self.get_size()[1]
+
         pixelArray = self.im.load()
 
         binaryString = ""
-        for i in range(num_pix): #should be 1024 for this file, but I truncated
-            for j in range(3):
-                binaryString += self.convertIntToString[pixelArray[0, i][j] % 4]
+        for k in range(height):
+            for i in range(width): #should be 1024 for this file, but I truncated
+                for j in range(3):
+                    binaryString += self.convertIntToString[pixelArray[k, i][j] % 4]
         # print(binaryString)
 
         # n = int('0b' + binaryString, 2)
         # print("decryptMessage:", n.to_bytes((n.bit_length() + 7) // 8, 'big').decode())
         print("decryptMessage:", self.bits2string(binaryString))
 
+    def get_size(self):
+        return self.im.size
+
     def show(self):
         self.im.show()
 
 
-im_proc = ImageProcessor("Mason2.jpeg")
+# im_proc = ImageProcessor("IMG_2174.JPG")
+im_proc = ImageProcessor("tmpytqxmw81.PNG")
 
-# messageToInsert = "Hi Mason! This is my new secret haha"
-# Needs to stop running!!!!TUNA Needs to stop running!!!!TUNA Needs to stop running!!!!"
-# im_proc.insertMessage(messageToInsert)
 # im_proc.show()
-im_proc.insertAndShow("Hello, Mason! You are my world!")
-im_proc.decryptMessage()
+message1 = "Hey you! Yeah, you! This is pretty cool, huh!"
+
+with open('book.txt', 'r') as file:
+    data = file.read().replace('\n', ' ').replace('\’', "").replace('-', "*dash*").replace('–', "*dash*")
+
+print("data", data, "\n")
+
+message2 = data
+im_proc.insertAndShow(message2)
+
+picture_length, picture_width = im_proc.get_size()
+im_proc.decryptMessage(picture_width, 1)

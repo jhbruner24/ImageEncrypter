@@ -106,19 +106,22 @@ class ImageProcessor:
         self.im.show()
 
 
-# im_proc = ImageProcessor("IMG_2174.JPG")
-im_proc = ImageProcessor("tmpytqxmw81.PNG")
+# INSERT STRING IMAGE FILE NAME HERE
+image_file_name = "Mason.jpeg"
 
-# im_proc.show()
-message1 = "Hey you! Yeah, you! This is pretty cool, huh!"
-
+# You may either insert a message as a string or read from another file
+# INSERT STRING MESSAGE HERE
+message = "Hey you! Yeah, you! This is pretty cool, huh!"
+# INSERT MESSAGE AS FILE
 with open('book.txt', 'r') as file:
     data = file.read().replace('\n', ' ').replace('\’', "").replace('-', "*dash*").replace('–', "*dash*")
 
+im_proc = ImageProcessor(image_file_name)
+
 print("data", data, "\n")
 
-message2 = data
-im_proc.insertAndShow(message2)
+message = data
+im_proc.insertAndShow(message)
 
 picture_length, picture_width = im_proc.get_size()
 im_proc.decryptMessage(picture_width, 1)
